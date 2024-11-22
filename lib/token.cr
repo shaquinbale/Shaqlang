@@ -1,7 +1,10 @@
 struct Token
   getter :text, :type
 
-  def initialize(text : String, type : Symbol)
+  def initialize(text : (String | Char), type : TokenType)
+    @text = text
+    @type = type
+  end
 end
 
 enum TokenType
