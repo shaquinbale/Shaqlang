@@ -1,12 +1,12 @@
 require "./lex"
 
 
-source = "+-/*"
+source = "\"dog\" dog DOG"
 lexer = Lexer.new(source)
 
 token = Token.new("", TokenType::EOF)
 
-until token.text == '\0'
+until lexer.current_char == '\0'
     token = lexer.get_token
-    puts token.text
+    p token
 end

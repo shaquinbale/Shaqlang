@@ -28,7 +28,7 @@ enum TokenType
   # Identifiers and values
   INT = 300 # i.e. 42
   FLOAT     # i.e. 3.14
-  STR       # i.e. "Dog"
+  STRING    # i.e. "Dog"
   ASSIGN    # =
   IDENT     # i.e. x
 
