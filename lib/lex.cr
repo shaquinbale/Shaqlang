@@ -174,6 +174,7 @@ class Lexer
     end
 
     token_text = @source[start_pos..@current_pos]
+    next_char
     return Token.new(token_text, TokenType::STRING)
   end
 end
