@@ -62,6 +62,8 @@ Operators for mathematical computations and comparisons.
 |-------------|---------------------------------|
 | `IDENT`     | User-defined variable names.    |
 | `INT`       | Integer literals (e.g., `42`).  |
+| `FLOAT`     | Float literals (e.g., `3.14`).  |
+| `STRING`    | String Literals (e.g. `"Dog"`)  |
 | `ASSIGN`    | Assignment operator (`=`).      |
 
 ---
