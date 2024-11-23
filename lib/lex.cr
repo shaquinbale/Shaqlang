@@ -43,10 +43,11 @@ class Lexer
     token = handle_arithmetic_operator
   when '>', '<', '=', '!'
     token = handle_comparison_operator
-  when /0-9/
+  when /[0-9]/
     token = handle_nums
-  when /a-zA-Z/
+  when /[a-zA-Z]/
     token = handle_letters
+  when /[{}()]/
   when '\0'
     token = Token.new(@current_char, TokenType::EOF)
   else
@@ -60,13 +61,13 @@ class Lexer
   def handle_arithmetic_operator : Token
     case @current_char
     when '+'
-      token = Token.new(@current_char, TokenType::PLUS)
+      return Token.new(@current_char, TokenType::PLUS)
     when '-'
-      token = Token.new(@current_char, TokenType::MINUS)
+      return Token.new(@current_char, TokenType::MINUS)
     when '*'
-      token = Token.new(@current_char, TokenType::ASTERISK)
+      return Token.new(@current_char, TokenType::ASTERISK)
     when '/'
-      token = Token.new(@current_char, TokenType::SLASH)
+      return Token.new(@current_char, TokenType::SLASH)
     else
       raise "Error: Expected an arithmetic operator."
     end
@@ -83,11 +84,38 @@ class Lexer
     when '!'
       return peek == '=' ? Token.new("#{@current_char}#{peek}", TokenType::NTEQ) : raise "Expected a '=' after '!'"
     else
-      raise "Unexpected comparison operator: #{@current_char}"
+      raise "Error: Unexpected comparison operator: #{@current_char}"
     end
   end
 
-  #def handle_nums : Token
+  # Can return either a float or an int, depending on the existence of a .
+  def handle_nums : Token
+    start_pos = @current_pos
+    is_float = false
+
+    while peek =~ /[0-9]/
+      next_char
+    end
+
+    if peek == '.'
+      is_float = true
+      next_char
+
+      if peek !~ /[0-9]/
+        raise "Error: Expected a num after decimal. Got #{peek}"
+      end
+    end
+
+    while peek =~ /[0-9]/
+      next_char
+    end
+
+    token_type = is_float ? TokenType::FLOAT : TokenType::INT
+    token_number = @source[start_pos..@current_pos]
+    return Token.new(token_number, token_type)
+  end
   
-  #def handle_letters : Token
+  def handle_letters : Token
+
+  def handle_structures : Token
 end
