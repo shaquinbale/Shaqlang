@@ -47,6 +47,8 @@ class Lexer
     token = handle_nums
   when /a-zA-Z/
     token = handle_letters
+  when '\0'
+    token = Token.new(@current_char, TokenType::EOF)
   else
     raise "Token not recognized: #{@current_char}"
   end
@@ -57,42 +59,35 @@ class Lexer
 
   def handle_arithmetic_operator : Token
     case @current_char
-    when '>'
-      if peek == '='
-        token = Token.new((@current_char + peek), TokenType::GTEQ)
-        next_char
-      else
-        token = Token.new(@current_char, TokenType::GT)
-      end
-
-    when '<'
-      if peek == '='
-        token = Token.new((@current_char + peek), TokenType::LTEQ)
-        next_char
-      else
-        token = Token.new(@current_char, TokenType::LT)
-      end
-
-    when '='
-      if peek == '='
-        token = Token.new((@current_char + peek), TokenType::EQEQ)
-        next_char
-      else
-        token = Token.new(@current_char, TokenType::ASSIGN)
-      end
-      
-    when '!'
-      if peek = '='
-        token = Token.new(@current_char + peek, TokenType::NTEQ)
-      else
-        raise "Expected a '=' after '!'"
-      end
+    when '+'
+      token = Token.new(@current_char, TokenType::PLUS)
+    when '-'
+      token = Token.new(@current_char, TokenType::MINUS)
+    when '*'
+      token = Token.new(@current_char, TokenType::ASTERISK)
+    when '/'
+      token = Token.new(@current_char, TokenType::SLASH)
+    else
+      raise "Error: Expected an arithmetic operator."
     end
   end
 
   def handle_comparison_operator : Token
+    case @current_char
+    when '>'
+      return peek == '=' ? Token.new("#{@current_char}#{peek}", TokenType::GTEQ).tap { next_char } : Token.new(@current_char, TokenType::GT)
+    when '<'
+      return peek == '=' ? Token.new("#{@current_char}#{peek}", TokenType::LTEQ).tap { next_char } : Token.new(@current_char, TokenType::LT)
+    when '='
+      return peek == '=' ? Token.new("#{@current_char}#{peek}", TokenType::EQ).tap { next_char } : Token.new(@current_char, TokenType::ASSIGN)
+    when '!'
+      return peek == '=' ? Token.new("#{@current_char}#{peek}", TokenType::NTEQ) : raise "Expected a '=' after '!'"
+    else
+      raise "Unexpected comparison operator: #{@current_char}"
+    end
+  end
 
-  def handle_nums : Token
+  #def handle_nums : Token
   
-  def handle_letters : Token
+  #def handle_letters : Token
 end
