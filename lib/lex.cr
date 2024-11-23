@@ -31,7 +31,7 @@ class Lexer
 
   # Skips comments which begin with '#'
   def skip_comments
-    if @current_char == '#'
+    if peek == '#'
       until @current_char == '\n'
         next_char
       end

@@ -1,7 +1,7 @@
 require "./lex"
 
 
-source = %q("dog" 2)
+source = "let dog = 5 # this is a comment \n"
 lexer = Lexer.new(source)
 
 token = Token.new("", TokenType::EOF)
