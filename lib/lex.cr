@@ -24,7 +24,7 @@ class Lexer
 
   # Increments to the next character until @current_char isn't whitespace
   def skip_whitespace
-    while @current_char == ' ' || @current_char == "\t" || @current_char == "\r"
+    while @current_char == ' ' || @current_char == '\t' || @current_char == '\r' || @current_char == '\n'
       self.next_char
     end
   end
@@ -59,8 +59,6 @@ class Lexer
       token = handle_strings
     when '\0'
       token = Token.new(@current_char, TokenType::EOF)
-    when '\n'
-      token = Token.new(@current_char, TokenType::NEWLINE)
     else
       raise "Token not recognized: #{@current_char}"
     end

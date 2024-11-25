@@ -2,16 +2,18 @@ module ParseHelpers
 
     # All statement helpers
     def handle_let
+      puts "statement-LET"
       next_token
 
       match(TokenType::IDENT)
-      match(TokenType::EQ)
+      match(TokenType::ASSIGN)
 
       expression
       match(TokenType::SEMICOL)
     end
 
     def handle_while
+      puts "statement-WHILE"
       next_token
 
       comparison
@@ -25,18 +27,22 @@ module ParseHelpers
     end
 
     def handle_print
+      puts "statement-PRINT"
       next_token
+      match(TokenType::LPAREN)
 
       if check_token(TokenType::STRING)
         next_token
       else
-        next_token
+        expression
       end
 
+      match(TokenType::RPAREN)
       match(TokenType::SEMICOL)
     end
 
     def handle_if
+      puts "statement-IF"
       next_token
 
       comparison

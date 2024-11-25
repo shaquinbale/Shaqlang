@@ -1,12 +1,16 @@
 require "./lex"
+require "./parse/parse"
 
 
-source = "let dog = 5 # this is a comment \n"
+source = File.read("./main.shaq")
 lexer = Lexer.new(source)
+parser = Parser.new(lexer)
 
 token = Token.new("", TokenType::EOF)
 
-until lexer.current_char == '\0'
-    token = lexer.get_token
-    p token
-end
+#until lexer.current_char == '\0'
+#    token = lexer.get_token
+#    p token
+#end
+
+parser.program

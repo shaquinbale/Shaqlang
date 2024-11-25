@@ -1,8 +1,8 @@
 # Shaqlang
 
-A project written in *crystal* to practice compiler/interpreter design.
+A project written in *crystal* to practice compiler creation with the end goal of bootstrapping itself.
 
-# **Language Tokens Documentation**
+# **Token Documentation**
 
 This document outlines the tokens recognized by the language.
 
@@ -15,7 +15,8 @@ Reserved words used to define control flow and variable declarations. These cann
 |------------|--------------------|
 | `LET`      | Declare variables. |
 | `WHILE`    | Create loops.      |
-
+| `PRINT`    | Print to STDOUT.   |
+| `IF`       | Basic Control Flow.|
 ---
 
 ## **2. Operators**
@@ -50,6 +51,7 @@ Operators for mathematical computations and comparisons.
 | `RBRACE`   | `}`     | End of a code block.     |
 | `LPAREN`   | `(`     | Start of a condition.    |
 | `RPAREN`   | `)`     | End of a condition.      |
+| `SEMICOL`  | `;`     | End of statement         |
 
 ### Special Characters
 | Token Name  | Symbol  | Description             |
@@ -67,3 +69,24 @@ Operators for mathematical computations and comparisons.
 | `ASSIGN`    | Assignment operator (`=`).      |
 
 ---
+
+# EBNF Tree
+
+```
+program = {statement};
+
+statement = 'let', ident, '=', expression, ';'
+                 |  'print', (expression | string), ';'
+                 |  'if', comparison, '{', {statement}, '}'
+                 |  'while', comparison, '{', {statement}, '}';
+
+comparison = expression, (('>' | '>=' | '<' | '<=' | '==' | '!=') ,expression), {('&&' | '||'), comparison};
+
+expression = term, {('+' | '-'), term};
+
+term = unary, {('*' | '/'), unary};
+
+unary = ['+' | '-'], primary;
+
+primary = number | ident | '(', expression, ')';
+```
