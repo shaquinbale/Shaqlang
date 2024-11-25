@@ -145,6 +145,10 @@ class Lexer
       return Token.new(token_text, TokenType::LET)
     when "while"
       return Token.new(token_text, TokenType::WHILE)
+    when "print"
+      return Token.new(token_text, TokenType::PRINT)
+    when "if"
+      return Token.new(token_text, TokenType::IF)
     else
       return Token.new(token_text, TokenType::IDENT)
     end

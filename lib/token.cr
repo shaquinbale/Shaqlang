@@ -11,6 +11,8 @@ enum TokenType
   # Keywords
   LET = 100  # let
   WHILE      # while
+  PRINT      # print
+  IF         # if
 
   # Operators
   PLUS = 200 # +
