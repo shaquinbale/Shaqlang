@@ -1,8 +1,8 @@
-require 'statementhandlers'
+require 'parsehelpers'
 require '../lex'
 
 class Parser
-  include StatementHandlers
+  include ParseHelpers
 
   def initialize(lexer)
     @lexer = Lexer.new
@@ -14,20 +14,20 @@ class Parser
     next_token
   end
 
-  def check_token(kind : TokenType) : Bool
-    @current_token.kind == kind
+  def check_token(type : TokenType) : Bool
+    @current_token.type == type
   end
 
-  def match(kind : TokenType)
-    if check_token(kind)
+  def match(type : TokenType)
+    if check_token(type)
       next_token
     else
-      raise("Error: Mismatched. Expected #{kind}, got #{@current_token.kind}")
+      raise("Error: Mismatched. Expected #{type}, got #{@current_token.type}")
     end
   end
   
-  def check_peek(kind : TokenType)
-    @peek_token.kind == kind
+  def check_peek(type : TokenType)
+    @peek_token.type == type
   end
 
   def next_token
@@ -69,27 +69,52 @@ class Parser
     end
 
     else
-      raise("Error: Expected valid keyword, got #{@current_token}")
+      raise("Error: Expected valid keyword, got #{@current_token.type}")
     end
   end
 
   # comparison = expression, (('>' | '>=' | '<' | '<=' | '==' | '!=') ,expression), {('&&' | '||'), comparison}
   def comparison
+    handle_sub_comparison
+
+    # add &&, || support later
   end
 
   # expression = term, {('+' | '-'), term}
   def expression
+    term
+
+    while check_token(TokenType::PLUS) || check_token(TokenType::MINUS)
+      next_token
+      term
   end
 
   # term = unary, {('*' | '/'), unary}
   def term
+    unary
+
+    while check_token(TokenType::ASTERISK) || check_token(TokenType::SLASH)
+      next_token
+      unary
   end
 
   # unary = ['+' | '-'], primary
   def unary
+    if check_token(TokenType::PLUS) || check_token(TokenType::MINUS)
+      next_token
+    end
+    primary
   end
 
   # primary = number | ident | '(', expression, ')'
   def primary
+    if check_token(TokenType::INT) || check_token(TokenType::FLOAT)
+      next_token
+    elsif check_token(TokenType::IDENT)
+      next_token
+    elsif check_token(TokenType::LPAREN)
+      next_token
+      expression
+      match(TokenType::RPAREN)
   end
 end
