@@ -53,7 +53,7 @@ class Lexer
       token = handle_nums
     when 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
       token = handle_letters
-    when '{', '}', '(', ')'
+    when '{', '}', '(', ')', ';'
       token = handle_structures
     when '"'
       token = handle_strings
@@ -164,6 +164,8 @@ class Lexer
       return Token.new(@current_char, TokenType::LPAREN)
     when ')'
       return Token.new(@current_char, TokenType::RPAREN)
+    when ';'
+      return Token.new(@current_char, TokenType::SEMICOL)
     else
       raise("Error: Expected a structural character, got: #{@current_char}")
     end

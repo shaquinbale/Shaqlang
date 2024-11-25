@@ -8,6 +8,7 @@ module ParseHelpers
       match(TokenType::EQ)
 
       expression
+      match(TokenType::SEMICOL)
     end
 
     def handle_while
@@ -32,6 +33,7 @@ module ParseHelpers
         next_token
       end
 
+      match(TokenType::SEMICOL)
     end
 
     def handle_if
@@ -47,7 +49,7 @@ module ParseHelpers
       match(TokenType::RBRACE)
     end
 
-    # Comparison helper
+    # Comparison helpers
     def is_comparison_operator?
       check_token(TokenType::GT) || check_token(TokenType::GTEQ) || check_token(TokenType::LT) || check_token(TokenType::LTEQ) || check_token(TokenType::EQ) || check_token(TokenType::NTEQ)
     end

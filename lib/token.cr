@@ -39,6 +39,7 @@ enum TokenType
   RBRACE       # }
   LPAREN       # (
   RPAREN       # )
+  SEMICOL      # ;
 
   EOF       # /0
   NEWLINE   # /n

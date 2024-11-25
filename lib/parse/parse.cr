@@ -53,7 +53,7 @@ class Parser
       handle_let
     end
 
-    # 'while', comparison, '{', {statement}, '}', ';';
+    # 'while', comparison, '{', {statement}, '}';
     elsif check_token(TokenType::WHILE)
       handle_while
     end
@@ -63,7 +63,7 @@ class Parser
       handle_print
     end
 
-    # 'if', comparison, '{', {statement}, '}', ';'
+    # 'if', comparison, '{', {statement}, '}'
     elsif check_token(TokenType::IF)
       handle_if
     end
